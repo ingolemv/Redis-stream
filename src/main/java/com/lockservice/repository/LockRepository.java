@@ -28,7 +28,7 @@ public class LockRepository {
 
     public boolean saveLock(Lock lock) {
         String key = lockKeyPrefix + lock.getRequestId();
-        return redisTemplate.opsForValue().setIfAbsent(key, lock);
+        return Boolean.TRUE.equals(redisTemplate.opsForValue().setIfAbsent(key, lock));
     }
 
     public boolean updateLock(Lock lock) {
