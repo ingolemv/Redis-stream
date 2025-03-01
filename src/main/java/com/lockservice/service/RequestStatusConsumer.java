@@ -92,10 +92,13 @@ public class RequestStatusConsumer implements StreamListener<String, MapRecord<S
     public void consumeEvents() {
         try {
             // Read new records from the stream
-            redisTemplate.opsForStream()
+            List<MapRecord<String, Object, Object>> records = redisTemplate.opsForStream()
                 .read(org.springframework.data.redis.connection.stream.Consumer.from(consumerGroup, consumerName),
-                      StreamOffset.create(streamKey, ReadOffset.lastConsumed()))
-                .forEach(this::onMessage);
+                      StreamOffset.create(streamKey, ReadOffset.lastConsumed()));
+                
+            if (records != null && !records.isEmpty()) {
+                records.forEach(this::onMessage);
+            }
         } catch (Exception e) {
             log.error("Error consuming stream events", e);
         }

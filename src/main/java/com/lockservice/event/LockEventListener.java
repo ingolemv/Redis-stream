@@ -58,7 +58,7 @@ public class LockEventListener implements StreamListener<String, MapRecord<Strin
     }
 
     @Scheduled(fixedDelay = 1000)
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "null" })
     public void consumeEvents() {
         try {
             redisTemplate.opsForStream()
